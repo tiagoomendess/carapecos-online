@@ -34,7 +34,7 @@
 		"S3_ENDPOINT": "https://ad77d629a3e505399d98f56b587f9189.r2.cloudflarestorage.com",
 		"S3_REGION": "auto",
 		"S3_BUCKET": "carapecos-online-prod",
-		"MEDIA_BASE_URL": "https://media.carapecos.com",
+		"MEDIA_BASE_URL": "https://carapecos-online.tiagoomendess.workers.dev",
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAFosW_fuVg8zggB1",
 		"VAPID_PUBLIC_KEY": "BE8jxdtiPeeMLBAlmRG0RPeh9G4DArlrEQbaqeGmlIAXTvZGru8F1",
 		"VAPID_SUBJECT": "mailto:geral@carapecos.com",
