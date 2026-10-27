@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "carapecos-online",
+	"compatibility_date": "2026-10-26",
+	"compatibility_flags": ["nodejs_als"],
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"d1_databases": [
+		{
+			// Test database; a separate production D1 is created before launch
+			"binding": "DB",
+			"database_name": "teste",
+			"database_id": "82d67596-f4da-42c3-8a83-97d564689cb0",
+			"migrations_dir": "drizzle"
+		}
+	],
+	"workers_dev": true,
+	"preview_urls": true
+}

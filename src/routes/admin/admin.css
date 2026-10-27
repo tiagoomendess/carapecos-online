@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+@plugin 'flowbite/plugin';
+@plugin '@tailwindcss/typography';
+@source '../../../node_modules/flowbite-svelte/dist';
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Brand green for flowbite's `primary` color */
+@theme {
+	--color-primary-50: #f0fdf4;
+	--color-primary-100: #dcfce7;
+	--color-primary-200: #bbf7d0;
+	--color-primary-300: #86efac;
+	--color-primary-400: #4ade80;
+	--color-primary-500: #22c55e;
+	--color-primary-600: #16a34a;
+	--color-primary-700: #15803d;
+	--color-primary-800: #166534;
+	--color-primary-900: #14532d;
+}
+
+/*
+ * Flowbite's Sidebar is `fixed top-0`. The backoffice keeps a sticky top navbar
+ * (h-16), so the sidebar starts below it and fills the rest of the viewport.
+ * The <aside> is always in the DOM (disableBreakpoints); show/hide is CSS.
+ * `.admin-sidebar` is on the <aside>; `.admin-sidebar-body` overrides the
+ * inner wrapper's default gray-50 so the column reads as a distinct pane.
+ */
+.admin-sidebar {
+	top: 4rem;
+	height: calc(100dvh - 4rem);
+	border-inline-end-width: 1px;
+}
+
+.admin-sidebar-body {
+	height: 100%;
+	background-color: #fff;
+}
+
+.dark .admin-sidebar-body {
+	background-color: #1f2937;
+}

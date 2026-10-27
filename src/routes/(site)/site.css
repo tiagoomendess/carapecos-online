@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+/*
+ * Carapeços Online design system: Liquid Glass chrome (header, chips, floating buttons) over calm,
+ * solid content. Colors are tokens that switch with the theme through `light-dark()`: the system
+ * setting by default, or `data-theme` on <html> when the reader picked one (set before paint in app.html).
+ */
+
+:root {
+	color-scheme: light dark;
+
+	--bg: light-dark(#f5f5f7, #0c1628);
+	--surface: light-dark(#fff, #152338);
+	--surface-2: light-dark(#ebebef, #1e2f4a);
+	--text: light-dark(#111, #eef3fb);
+	--text-2: light-dark(#5c5c63, #93a4bf);
+	--separator: light-dark(rgb(0 0 0 / 0.1), rgb(160 196 240 / 0.14));
+	/* Brand green from the logo. `--accent` is darker in light mode so text links pass WCAG AA */
+	--brand: #2aa11a;
+	--accent: light-dark(#1d7a10, #4cd335);
+	--accent-soft: light-dark(rgb(42 161 26 / 0.12), rgb(76 211 53 / 0.18));
+
+	/* Glass: translucent fill, blur, a bright top edge where light catches the material */
+	--glass-fill: light-dark(rgb(255 255 255 / 0.62), rgb(18 34 56 / 0.58));
+	--glass-edge: light-dark(rgb(255 255 255 / 0.8), rgb(186 214 255 / 0.2));
+	--glass-border: light-dark(rgb(0 0 0 / 0.08), rgb(160 196 240 / 0.12));
+	--glass-shadow:
+		0 8px 24px light-dark(rgb(0 0 0 / 0.1), rgb(4 10 24 / 0.5)),
+		0 1px 2px light-dark(rgb(0 0 0 / 0.06), rgb(4 10 24 / 0.35));
+	--glass-blur: blur(20px) saturate(180%);
+
+	--radius-card: 1.25rem;
+	--header-h: 3.75rem;
+	--gutter: 1rem;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+@theme inline {
+	--color-bg: var(--bg);
+	--color-surface: var(--surface);
+	--color-surface-2: var(--surface-2);
+	--color-text: var(--text);
+	--color-text-2: var(--text-2);
+	--color-separator: var(--separator);
+	--color-brand: var(--brand);
+	--color-accent: var(--accent);
+	--color-accent-soft: var(--accent-soft);
+	--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-sans);
+	-webkit-text-size-adjust: 100%;
+	-webkit-tap-highlight-color: transparent;
+	/* Ease dark <-> light switches instead of an abrupt brightness jump */
+	transition: background-color 300ms ease;
+}
+
+body {
+	font-size: 1rem;
+	line-height: 1.5;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Size-specific tracking and leading: tighter as type grows */
+.text-display {
+	font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
+	line-height: 1.08;
+	letter-spacing: -0.025em;
+	font-weight: 700;
+}
+
+.text-title {
+	font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.75rem);
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	font-weight: 700;
+}
+
+.text-headline {
+	font-size: 1.0625rem;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	font-weight: 600;
+}
+
+.text-caption {
+	font-size: 0.8125rem;
+	line-height: 1.35;
+	letter-spacing: 0.005em;
+}
+
+.text-eyebrow {
+	font-size: 0.75rem;
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+/* Liquid Glass surface for floating chrome. Heavier text weight keeps it legible over content */
+.glass {
+	background: var(--glass-fill);
+	-webkit-backdrop-filter: var(--glass-blur);
+	backdrop-filter: var(--glass-blur);
+	border: 1px solid var(--glass-border);
+	box-shadow:
+		inset 0 1px 0 var(--glass-edge),
+		var(--glass-shadow);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+	.glass {
+		background: var(--surface);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+}
+
+@media (prefers-contrast: more) {
+	.glass {
+		background: var(--surface);
+		border-color: var(--text-2);
+	}
+}
+
+/* Press feedback on pointer-down: instant, small, springy release */
+.pressable {
+	transition: transform 160ms var(--ease-out);
+}
+
+.pressable:active {
+	transform: scale(0.96);
+	transition-duration: 80ms;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* Article body, from the rich-text editor (and the import) */
+.article-body {
+	font-size: 1.0625rem;
+	line-height: 1.65;
+	overflow-wrap: break-word;
+}
+
+.article-body > * + * {
+	margin-top: 1.1em;
+}
+
+.article-body h2 {
+	margin-top: 1.8em;
+	font-size: 1.3rem;
+	line-height: 1.25;
+	letter-spacing: -0.015em;
+	font-weight: 700;
+}
+
+.article-body h3 {
+	margin-top: 1.6em;
+	font-size: 1.125rem;
+	line-height: 1.3;
+	font-weight: 700;
+}
+
+.article-body a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.15em;
+}
+
+.article-body strong {
+	font-weight: 650;
+}
+
+.article-body ul,
+.article-body ol {
+	padding-left: 1.4em;
+}
+
+.article-body ul {
+	list-style: disc;
+}
+
+.article-body ol {
+	list-style: decimal;
+}
+
+.article-body li + li {
+	margin-top: 0.35em;
+}
+
+.article-body blockquote {
+	border-left: 3px solid var(--brand);
+	padding-left: 1em;
+	color: var(--text-2);
+	font-style: italic;
+}
+
+.article-body figure {
+	margin-block: 1.6em;
+}
+
+.article-body figure img {
+	width: 100%;
+	height: auto;
+	border-radius: 0.875rem;
+	background: var(--surface-2);
+}
+
+.article-body figure iframe {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	height: auto;
+	border: 0;
+	border-radius: 0.875rem;
+	background: #000;
+}
+
+.article-body figcaption {
+	margin-top: 0.5em;
+	font-size: 0.8125rem;
+	color: var(--text-2);
+}
+
+.article-body table {
+	width: 100%;
+	font-size: 0.9375rem;
+	border-collapse: collapse;
+}
+
+.article-body td,
+.article-body th {
+	border-bottom: 1px solid var(--separator);
+	padding: 0.4em 0.5em;
+	text-align: left;
+}
+
+/* Page transitions: a quick cross-fade, with the cover image morphing between feed and article */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 220ms;
+	animation-timing-function: var(--ease-out);
+}
+
+::view-transition-group(*) {
+	animation-duration: 380ms;
+	animation-timing-function: var(--ease-out);
+}
+
+/* The cover snapshot is a rectangle unless we clip it. Radius on the named
+   element is captured; this keeps the flying image rounded while it morphs.
+   Set the radius on old/new too — they inherit from image-pair, not the group. */
+::view-transition-group(.cover),
+::view-transition-old(.cover),
+::view-transition-new(.cover) {
+	overflow: clip;
+	border-radius: var(--radius-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		transition: none;
+	}
+
+	.pressable,
+	.pressable:active {
+		transform: none;
+		transition: none;
+	}
+
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+}

@@ -1,0 +1,17 @@
+---
+description: Backoffice chrome — left sidebar for section links, top navbar for identity
+globs: src/routes/admin/**/*.{svelte,ts,css},src/lib/components/admin/**/*.svelte
+alwaysApply: false
+---
+
+# Admin chrome
+
+Logged-in `/admin` uses a **sticky top navbar** (brand, user, logout) and a **left sidebar** (section links). Do not put Artigos / Sondagens / … back in `NavUl`.
+
+- Chrome lives only in `src/routes/admin/+layout.svelte` + `admin.css`. Pages render a `<main>` only.
+- Login and setup have no chrome (`data.user` is null).
+- Desktop (`md+`): sidebar always visible, content `md:ms-64`. Mobile: hamburger drawer; `afterNavigate` / Escape / backdrop close it.
+- Keep `disableBreakpoints` on `<Sidebar>` so the `<aside>` is in the SSR HTML. Visibility is CSS (`hidden md:block`), not Flowbite’s JS width check.
+- Sidebar sits under the `h-16` navbar via `.admin-sidebar`. Keep that offset if you change navbar height.
+- Group new links: Conteúdo / Moderação / Definições. Admin-only items stay behind `role === 'admin'` here and `requireAdmin` on the server.
+- Labels go through Paraglide (`admin_nav_*`, `admin_nav_group_*`). Full map: [docs/admin-chrome.md](docs/admin-chrome.md).

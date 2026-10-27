@@ -1,0 +1,4 @@
+import { listPolls } from '#lib/server/polls.ts';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async () => ({ polls: await listPolls() });
