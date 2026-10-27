@@ -6,7 +6,6 @@
 		Alert,
 		Button,
 		Card,
-		Checkbox,
 		Helper,
 		Input,
 		Label,
@@ -234,15 +233,28 @@
 			<CoverField bind:cover />
 
 			<div>
-				<Checkbox name="featured" checked={initial?.featured ?? false}>
+				<Label class="flex items-center gap-2 font-normal">
+					<input
+						type="checkbox"
+						name="featured"
+						class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+						checked={initial?.featured ?? false}
+					/>
 					{m.admin_field_featured()}
-				</Checkbox>
+				</Label>
 				<Helper class="mt-1 ps-6">{m.admin_field_featured_hint()}</Helper>
 			</div>
 			<div>
-				<Checkbox name="sendPush" checked={initial?.sendPush ?? false} disabled={!pushEnabled}>
+				<Label class="flex items-center gap-2 font-normal">
+					<input
+						type="checkbox"
+						name="sendPush"
+						class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+						checked={initial?.sendPush ?? false}
+						disabled={!pushEnabled}
+					/>
 					{m.admin_field_send_push()}
-				</Checkbox>
+				</Label>
 				{#if !pushEnabled}
 					<Helper class="mt-1 ps-6">{m.admin_push_disabled()}</Helper>
 				{:else if article?.pushSentAt}

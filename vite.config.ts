@@ -8,6 +8,11 @@ import adapter from '@sveltejs/adapter-cloudflare';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
+	// TipTap ships `/** @jsxImportSource @tiptap/core */` in already-compiled JS.
+	// Rolldown warns unless the automatic JSX transform is enabled.
+	oxc: {
+		jsx: { runtime: 'automatic' }
+	},
 	plugins: [
 		enhancedImages(),
 		tailwindcss(),

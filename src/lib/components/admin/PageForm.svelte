@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { beforeNavigate } from '$app/navigation';
 	import { enhance } from '$app/forms';
-	import { Alert, Button, Card, Checkbox, Helper, Input, Label } from 'flowbite-svelte';
+	import { Alert, Button, Card, Helper, Input, Label } from 'flowbite-svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import { slugify } from '#lib/slug.ts';
 	import RichTextEditor from './RichTextEditor.svelte';
@@ -181,12 +181,24 @@
 				<Helper class="mt-1">/{slug || '…'}</Helper>
 			</div>
 
-			<Checkbox name="showInFooter" checked={initial?.showInFooter ?? false}>
+			<Label class="flex items-center gap-2 font-normal">
+				<input
+					type="checkbox"
+					name="showInFooter"
+					class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+					checked={initial?.showInFooter ?? false}
+				/>
 				{m.admin_field_show_in_footer()}
-			</Checkbox>
-			<Checkbox name="showInMenu" checked={initial?.showInMenu ?? false}>
+			</Label>
+			<Label class="flex items-center gap-2 font-normal">
+				<input
+					type="checkbox"
+					name="showInMenu"
+					class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+					checked={initial?.showInMenu ?? false}
+				/>
 				{m.admin_field_show_in_menu()}
-			</Checkbox>
+			</Label>
 
 			<div class="flex flex-wrap gap-2">
 				<Button type="submit" name="intent" value="publish" disabled={saving}>
