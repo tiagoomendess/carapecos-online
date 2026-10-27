@@ -10,13 +10,26 @@
 	},
 	"d1_databases": [
 		{
-			// Test database; a separate production D1 is created before launch
 			"binding": "DB",
-			"database_name": "teste",
-			"database_id": "82d67596-f4da-42c3-8a83-97d564689cb0",
+			"database_name": "carapecos-online",
+			// Paste the production database_id from the Cloudflare
+			// "keep deployments in sync" box (Workers → Settings → Bindings).
+			"database_id": "PASTE_PRODUCTION_D1_ID",
+			// Remote `wrangler dev` keeps using the old teste database
+			"preview_database_id": "82d67596-f4da-42c3-8a83-97d564689cb0",
 			"migrations_dir": "drizzle"
 		}
 	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "carapecos-online-prod"
+		}
+	],
+	"vars": {
+		"S3_BUCKET": "carapecos-online-prod",
+		"S3_REGION": "auto"
+	},
 	"workers_dev": true,
 	"preview_urls": true
 }
