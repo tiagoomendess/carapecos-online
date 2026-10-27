@@ -63,7 +63,7 @@ const platform = await getPlatformProxy<{ DB: D1Database }>(
 );
 console.log(
 	args.remote
-		? `Importing into the REMOTE D1 and ${env('S3_ENDPOINT')} (bucket ${env('S3_BUCKET')}).`
+		? `Importing into remote D1 and ${env('S3_ENDPOINT')} (bucket ${env('S3_BUCKET')}).`
 		: 'Importing into the local D1.'
 );
 const db: Db = drizzle(platform.env.DB, { schema });
@@ -146,7 +146,13 @@ async function run() {
 function remoteConfig() {
 	const source = readFileSync('wrangler.jsonc', 'utf8').replace(/^\s*\/\/.*$/gm, '');
 	const config = JSON.parse(source);
-	for (const database of config.d1_databases) database.remote = true;
+	for (const database of config.d1_databases) {
+		// preview_database_id is the old `teste` DB for `wrangler dev --remote`.
+		// A production import must use database_id (carapecos-online).
+		delete database.preview_database_id;
+		database.remote = true;
+		console.log(`Remote D1: ${database.database_name} (${database.database_id})`);
+	}
 	writeFileSync(remoteConfigPath, JSON.stringify(config, null, 2));
 	return remoteConfigPath;
 }
