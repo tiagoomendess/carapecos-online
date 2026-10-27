@@ -31,10 +31,10 @@
 	//   TURNSTILE_SECRET_KEY, VAPID_PRIVATE_KEY
 	"vars": {
 		"ORIGIN": "https://carapecos-online.tiagoomendess.workers.dev",
-		"S3_ENDPOINT": "https://ad77d629a3e505399d98f56b587f9189.r2.cloudflarestorage.com",
+		"S3_ENDPOINT": "https://ad77d629a3e505399d98f56b587f9189.eu.r2.cloudflarestorage.com/",
 		"S3_REGION": "auto",
 		"S3_BUCKET": "carapecos-online-prod",
-		"MEDIA_BASE_URL": "https://ad77d629a3e505399d98f56b587f9189.r2.cloudflarestorage.com",
+		"MEDIA_BASE_URL": "https://ad77d629a3e505399d98f56b587f9189.eu.r2.cloudflarestorage.com/",
 		"TURNSTILE_SITE_KEY": "0x4AAAAAAFosW_fuVg8zggB1",
 		"VAPID_PUBLIC_KEY": "BE8jxdtiPeeMLBAlmRG0RPeh9G4DArlrEQbaqeGmlIAXTvZGru8F1",
 		"VAPID_SUBJECT": "mailto:geral@carapecos.com",
