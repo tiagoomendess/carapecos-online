@@ -6,6 +6,7 @@
 	import { articleSlugFromPath, setCoverMorphSlug } from '#lib/cover-transition.svelte.ts';
 	import Footer from '#lib/components/site/Footer.svelte';
 	import Header from '#lib/components/site/Header.svelte';
+	import PullToRefresh from '#lib/components/site/PullToRefresh.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
@@ -42,6 +43,8 @@
 		></script>
 	{/if}
 </svelte:head>
+
+<PullToRefresh />
 
 <div class="flex min-h-dvh flex-col">
 	<Header menu={data.menu} />

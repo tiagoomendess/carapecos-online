@@ -14,8 +14,16 @@
 
 	// Going "back" only makes sense when the previous page was on this site
 	let cameFromSite = $state(false);
+	// Visible near the top of the home page; hides once the reader has moved into the feed
+	let scrolled = $state(false);
+
+	function syncScroll() {
+		scrolled = window.scrollY > 200;
+	}
+
 	afterNavigate(({ from }) => {
 		if (from) cameFromSite = true;
+		syncScroll();
 	});
 
 	function back(event: MouseEvent) {
@@ -55,19 +63,24 @@
 	</a>
 
 	<div class="slot justify-end">
-		<div class="glass flex rounded-full">
-			<a
-				href={resolve('/(site)/pesquisa')}
-				class="pressable grid size-11 place-items-center rounded-full"
-				aria-label={m.nav_search()}
-				title={m.nav_search()}
-			>
-				<Icon name="search" />
-			</a>
-			<ThemeToggle />
-		</div>
+		<ThemeToggle />
 	</div>
 </header>
+
+{#if isHome}
+	<a
+		href={resolve('/(site)/pesquisa')}
+		class={['search', 'glass', 'pressable', { away: scrolled }]}
+		aria-label={m.nav_search()}
+		title={m.nav_search()}
+		aria-hidden={scrolled}
+		inert={scrolled}
+	>
+		<Icon name="search" />
+	</a>
+{/if}
+
+<svelte:window onscroll={syncScroll} />
 
 <style>
 	.header {
@@ -89,5 +102,33 @@
 	.slot {
 		display: flex;
 		min-width: 0;
+	}
+
+	.search {
+		position: fixed;
+		z-index: 30;
+		right: max(var(--gutter), env(safe-area-inset-right));
+		bottom: calc(1rem + env(safe-area-inset-bottom));
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		place-items: center;
+		border-radius: 999px;
+		color: var(--text);
+		transition:
+			opacity 180ms var(--ease-out),
+			transform 180ms var(--ease-out);
+	}
+
+	.search.away {
+		opacity: 0;
+		transform: translateY(0.75rem);
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.search {
+			transition: none;
+		}
 	}
 </style>

@@ -38,7 +38,7 @@
 
 <button
 	type="button"
-	class="pressable grid size-11 place-items-center rounded-full"
+	class="glass pressable grid size-11 place-items-center rounded-full"
 	onclick={toggle}
 	aria-label={theme === 'dark' ? m.theme_to_light() : m.theme_to_dark()}
 	title={theme === 'dark' ? m.theme_to_light() : m.theme_to_dark()}
