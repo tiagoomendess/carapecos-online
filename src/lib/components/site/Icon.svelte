@@ -2,6 +2,7 @@
 	// Stroke icons on a 24px grid, drawn to match SF Symbols' weight at small sizes
 	const paths = {
 		back: 'M15 5l-7 7 7 7',
+		arrowDown: 'M12 4.5v15M6.5 14l5.5 5.5 5.5-5.5',
 		search: 'M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM15.5 15.5L20 20',
 		sun: 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4',
 		moon: 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z',

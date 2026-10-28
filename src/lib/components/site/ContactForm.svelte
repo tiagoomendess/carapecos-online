@@ -6,6 +6,7 @@
 	import { formatDateTime } from '#lib/format.ts';
 	import type { ContactMessageView } from '#lib/types.ts';
 	import Turnstile from './Turnstile.svelte';
+	import { toast } from '#lib/toast.ts';
 
 	let { messages }: { messages: ContactMessageView[] } = $props();
 
@@ -34,10 +35,6 @@
 </script>
 
 <div class="contact">
-	{#if result?.sent}
-		<p class="sent" role="status">{m.contact_sent()}</p>
-	{/if}
-
 	{#if messages.length}
 		<section class="history" aria-labelledby="contact-history-title">
 			<h2 id="contact-history-title" class="text-headline">{m.contact_history()}</h2>
@@ -69,7 +66,10 @@
 				await update({ reset: false });
 				submitting = false;
 				attempt++;
-				if (outcome.type === 'success') message = '';
+				if (outcome.type === 'success') {
+					message = '';
+					toast(m.contact_sent());
+				}
 			};
 		}}
 	>
@@ -131,7 +131,6 @@
 	}
 
 	.form,
-	.sent,
 	.history {
 		padding: 1.25rem;
 		border-radius: var(--radius-card);

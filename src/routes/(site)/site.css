@@ -62,6 +62,8 @@ html {
 	font-family: var(--font-sans);
 	-webkit-text-size-adjust: 100%;
 	-webkit-tap-highlight-color: transparent;
+	/* The site implements its own pull-to-refresh; stop the browser's native one */
+	overscroll-behavior-y: none;
 	/* Ease dark <-> light switches instead of an abrupt brightness jump */
 	transition: background-color 300ms ease;
 }

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import './site.css';
 	import { CF_ANALYTICS_TOKEN } from '$app/env/public';
-	import { onNavigate } from '$app/navigation';
+	import { onNavigate, refreshAll } from '$app/navigation';
 	import { tick } from 'svelte';
 	import { articleSlugFromPath, setCoverMorphSlug } from '#lib/cover-transition.svelte.ts';
 	import Footer from '#lib/components/site/Footer.svelte';
 	import Header from '#lib/components/site/Header.svelte';
 	import PullToRefresh from '#lib/components/site/PullToRefresh.svelte';
+	import Toaster from '#lib/components/site/Toaster.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
@@ -44,12 +45,16 @@
 	{/if}
 </svelte:head>
 
-<PullToRefresh />
+<Toaster />
 
-<div class="flex min-h-dvh flex-col">
-	<Header menu={data.menu} />
-	<div class="flex-1">
-		{@render children()}
+<Header menu={data.menu} />
+<!-- The header stays put; the page and footer follow the finger -->
+<PullToRefresh onrefresh={refreshAll}>
+	<!-- At least the rest of the screen, so a short page still has its footer at the bottom -->
+	<div class="flex min-h-[calc(100dvh-var(--header-h)-env(safe-area-inset-top))] flex-col">
+		<div class="flex-1">
+			{@render children()}
+		</div>
+		<Footer pages={data.footerPages} />
 	</div>
-	<Footer pages={data.footerPages} />
-</div>
+</PullToRefresh>

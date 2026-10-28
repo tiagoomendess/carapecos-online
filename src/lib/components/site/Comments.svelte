@@ -7,6 +7,7 @@
 	import { formatListDate } from '#lib/format.ts';
 	import type { CommentView } from '#lib/types.ts';
 	import Turnstile from './Turnstile.svelte';
+	import { toast } from '#lib/toast.ts';
 
 	let { comments }: { comments: CommentView[] } = $props();
 
@@ -152,11 +153,13 @@
 				submitting = false;
 				attempt++;
 				if (result.type === 'success') {
+					const id = (result.data as CommentResult | undefined)?.comment?.published;
+					if (!id) return;
 					body = '';
 					replyTo = null;
-					const id = (result.data as CommentResult | undefined)?.comment?.published;
+					toast(m.comments_published());
 					await tick();
-					if (id) document.getElementById(`comentario-${id}`)?.scrollIntoView({ block: 'center' });
+					document.getElementById(`comentario-${id}`)?.scrollIntoView({ block: 'center' });
 				}
 			};
 		}}
@@ -202,8 +205,6 @@
 			<p class="text-caption text-red-600" role="alert">
 				{errors[result.comment.error]?.() ?? m.comments_error_body()}
 			</p>
-		{:else if result?.comment?.published}
-			<p class="text-caption text-accent" role="status">{m.comments_published()}</p>
 		{/if}
 
 		<div class="flex flex-wrap items-center gap-3">
