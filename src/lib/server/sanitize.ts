@@ -16,6 +16,8 @@ const allowedTags = new Set([
 	'br',
 	'h2',
 	'h3',
+	'h4',
+	'span',
 	'strong',
 	'em',
 	'u',
@@ -63,20 +65,47 @@ const renamedTags: Record<string, string> = {
 	b: 'strong',
 	i: 'em',
 	h1: 'h2',
-	h4: 'h3',
-	h5: 'h3',
-	h6: 'h3',
+	h5: 'h4',
+	h6: 'h4',
 	del: 's',
 	strike: 's'
 };
 
 const allowedAttributes: Record<string, string[]> = {
+	p: ['style'],
+	h2: ['style'],
+	h3: ['style'],
+	h4: ['style'],
+	span: ['style'],
 	a: ['href'],
 	img: ['src', 'srcset', 'sizes', 'alt', 'width', 'height', 'loading'],
 	iframe: ['src', 'allowfullscreen', 'title'],
 	th: ['colspan', 'rowspan'],
 	td: ['colspan', 'rowspan']
 };
+
+/** Inline styles the editor sets: alignment on blocks, colour and size on text */
+const allowedStyles: Record<string, Record<string, RegExp>> = {
+	span: {
+		color: /^(#[0-9a-f]{3,8}|rgba?\([\d.,%\s/]+\))$/i,
+		'font-size': /^\d{1,3}(\.\d+)?(px|em|rem|%)$/
+	},
+	block: { 'text-align': /^(left|center|right|justify)$/ }
+};
+
+function cleanStyle(tag: string, style: string) {
+	const allowed = allowedStyles[tag === 'span' ? 'span' : 'block'];
+	return style
+		.split(';')
+		.map((declaration) => {
+			const [property, ...rest] = declaration.split(':');
+			const name = property.trim().toLowerCase();
+			const value = rest.join(':').trim();
+			return Object.hasOwn(allowed, name) && allowed[name].test(value) ? `${name}: ${value}` : null;
+		})
+		.filter(Boolean)
+		.join('; ');
+}
 
 const pollEmbedSlug = /^[a-z0-9-]{1,100}$/;
 
@@ -100,6 +129,11 @@ function cleanAttributes(el: Element) {
 		if ((name === 'width' || name === 'height' || name.endsWith('span')) && !/^\d+$/.test(value))
 			continue;
 		if (name === 'loading' && value !== 'lazy') continue;
+		if (name === 'style') {
+			const style = cleanStyle(el.name, value);
+			if (style) attribs.style = style;
+			continue;
+		}
 		attribs[name] = value;
 	}
 	if (el.name === 'a' && attribs.href && /^https?:/i.test(attribs.href)) {
@@ -127,6 +161,8 @@ function cleanNodes(nodes: ChildNode[]): ChildNode[] {
 		node.name = name;
 		cleanAttributes(node);
 		if (name === 'img' && !node.attribs.src) return [];
+		// Spans only carry text styles; without one they're noise
+		if (name === 'span' && !node.attribs.style) return children;
 		if (name === 'iframe' && !isAllowedEmbed(node.attribs.src ?? '')) return [];
 		if (name === 'iframe') node.attribs.allowfullscreen = '';
 

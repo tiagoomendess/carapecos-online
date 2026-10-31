@@ -31,6 +31,19 @@ describe('sanitizeRichText', () => {
 		);
 	});
 
+	it('keeps text styles and alignment from the editor', () => {
+		expect(
+			sanitizeRichText(
+				'<h4 style="text-align: center">a</h4><p style="text-align: right; position: fixed">' +
+					'<span style="color: #ff0000; font-size: 18px">b</span>' +
+					'<span style="background: url(x); constructor: 1">c</span></p>'
+			)
+		).toBe(
+			'<h4 style="text-align: center">a</h4><p style="text-align: right">' +
+				'<span style="color: #ff0000; font-size: 18px">b</span>c</p>'
+		);
+	});
+
 	it('keeps only allowed video players', () => {
 		expect(
 			sanitizeRichText(
